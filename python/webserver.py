@@ -21,9 +21,9 @@ class RequestHandler(BaseHTTPRequestHandler):
         try:
             # 文件完整路径
             if self.path == "/":
-                full_path = os.getcwd() + "\\plugins\\LXLSLM\\unmined-web\\unmined.index.html"
+                full_path = os.getcwd() + "\\plugins\\BDSLM\\unmined-web\\unmined.index.html"
             else:
-                full_path = os.getcwd() + "\\plugins\\LXLSLM\\unmined-web" + self.path
+                full_path = os.getcwd() + "\\plugins\\BDSLM\\unmined-web" + self.path
             # 如果该路径不存在...
             if not os.path.exists(full_path):
                 #抛出异常：文件未找到

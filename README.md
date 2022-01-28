@@ -1,2 +1,3 @@
-# LXLSLM
- LiteXLoader Satellite Map
+# BDSLM
+
+ Bedrock-Server Satellite Map

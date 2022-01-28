@@ -1,4 +1,0 @@
-﻿Name=uNmINeD Default
-Author=megasys
-Url=https://unmined.net/
-Description=Default configuration pack
