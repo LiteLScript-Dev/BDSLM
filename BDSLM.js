@@ -18,7 +18,7 @@ function RendMap() {
 
 function startPythonWebserver() {
     port = JSON.parse(File.readFrom("./plugins/BDSLM/config.json"))["port"];
-    system.newProcess(".\\plugins\\BDSLM\\webserver.exe " + port, function GetRendMapResult(_exitcode, _output) { });
+    system.cmd("start .\\plugins\\BDSLM\\webserver.exe " + port, function GetRendMapResult(_exitcode, _output) { });
 }
 
 function Init() {
