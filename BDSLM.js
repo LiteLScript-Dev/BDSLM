@@ -13,6 +13,8 @@ http {\n\
     }\n\
 }"
 
+configure = JSON.parse(File.readFrom("./plugins/BDSLM/config.json"))
+
 function GetServerProperties() {
     let serverProperties = {};
     propertiesFile = File.readFrom("./server.properties").replace("\r", "").split(/\n/); // 读入server.properties并且分割每一行
@@ -27,12 +29,14 @@ function GetServerProperties() {
 
 function RendMap() {
     let serverProperties = GetServerProperties();
-    system.cmd("start .\\plugins\\BDSLM\\unmined\\unmined-cli.exe web render --world=\"./worlds/" + serverProperties["level-name"] + "\" --output=\"./plugins/BDSLM/unmined-web/\" --imageformat=webp -c", function GetRendMapResult(_exitcode, _output) { });
+    let zoomin = configure["maxZoomLevel"];
+    let zoomout = configure["minZoomLevel"];
+    system.cmd("start .\\plugins\\BDSLM\\unmined\\unmined-cli.exe web render --world=\"./worlds/" + serverProperties["level-name"] + "\" --output=\"./plugins/BDSLM/unmined-web/\" --imageformat=webp -c --zoomin=" + zoomin + " --zoomout=" + zoomout, function GetRendMapResult(_exitcode, _output) { });
     startNginxWebserver();
 }
 
 function startNginxWebserver() {
-    port = JSON.parse(File.readFrom("./plugins/BDSLM/config.json"))["port"];
+    let port = configure["port"];
     File.writeTo("./plugins/BDSLM/nginx/conf/nginx.conf", nginxConf.replaceAll("port", port));
     system.cmd(".\\plugins\\BDSLM\\nginx\\nginx.exe -s stop -p ./plugins/BDSLM/nginx/", function GetRendMapResult(_exitcode, _output) {
         system.newProcess(".\\plugins\\BDSLM\\nginx\\nginx -p ./plugins/BDSLM/nginx/", function GetRendMapResult(_exitcode, _output) { });
