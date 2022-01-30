@@ -32,6 +32,7 @@ function RendMap() {
     let zoomin = configure["maxZoomLevel"];
     let zoomout = configure["minZoomLevel"];
     system.cmd("start .\\plugins\\BDSLM\\unmined\\unmined-cli.exe web render --world=\"./worlds/" + serverProperties["level-name"] + "\" --output=\"./plugins/BDSLM/unmined-web/\" --imageformat=webp -c --zoomin=" + zoomin + " --zoomout=" + zoomout, function GetRendMapResult(_exitcode, _output) { });
+    log("启动nginx。");
     startNginxWebserver();
 }
 
@@ -44,6 +45,7 @@ function startNginxWebserver() {
 }
 
 function Init() {
+    log("启动地图渲染进程！请耐心等待弹出窗口退出后再打开卫星地图网页。");
     RendMap();
 }
 
