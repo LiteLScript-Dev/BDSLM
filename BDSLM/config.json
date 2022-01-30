@@ -1,5 +1,6 @@
 {
     "port": 5000,
     "maxZoomLevel": -2,
-    "minZoomLevel": 4
+    "minZoomLevel": 4,
+    "mapTitle": "default"
 }
