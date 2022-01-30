@@ -29,8 +29,8 @@ function GetServerProperties() {
 
 function RendMap() {
     let serverProperties = GetServerProperties();
-    let zoomin = configure["maxZoomLevel"];
-    let zoomout = configure["minZoomLevel"];
+    let zoomin = configure["mapRender"]["maxZoomLevel"];
+    let zoomout = configure["mapRender"]["minZoomLevel"];
     log("启动地图渲染进程……");
     system.cmd("start .\\plugins\\BDSLM\\unmined\\unmined-cli.exe web render --world=\"./worlds/" + serverProperties["level-name"] + "\" --output=\"./plugins/BDSLM/unmined-web/\" --imageformat=webp -c --zoomin=" + zoomin + " --zoomout=" + zoomout, function GetRendMapResult(_exitcode, _output) { });
     setTimeout(changeWebTitle, 10000);
@@ -38,13 +38,13 @@ function RendMap() {
 
 function changeWebTitle() {
     log("应用配置文件……");
-    if (configure["mapTitle"] != "default") {
-        File.writeTo("./plugins/BDSLM/unmined-web/unmined.index.html", File.readFrom("./plugins/BDSLM/unmined-web/unmined.index.html").replaceAll("UnminedMapProperties.worldName", '"' + configure["mapTitle"] + '"'));
+    if (configure["webserver"]["mapTitle"] != "default") {
+        File.writeTo("./plugins/BDSLM/unmined-web/unmined.index.html", File.readFrom("./plugins/BDSLM/unmined-web/unmined.index.html").replaceAll("UnminedMapProperties.worldName", '"' + configure["webserver"]["mapTitle"] + '"'));
     }
 }
 
 function startNginxWebserver() {
-    let port = configure["port"];
+    let port = configure["webserver"]["port"];
     File.writeTo("./plugins/BDSLM/nginx/conf/nginx.conf", nginxConf.replaceAll("port", port));
     log("启动nginx……");
     system.cmd(".\\plugins\\BDSLM\\nginx\\nginx.exe -s stop -p ./plugins/BDSLM/nginx/", function GetRendMapResult(_exitcode, _output) {

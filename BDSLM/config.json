@@ -1,6 +1,10 @@
 {
-    "port": 5000,
-    "maxZoomLevel": -2,
-    "minZoomLevel": 4,
-    "mapTitle": "default"
+    "webserver": {
+        "port": 5000,
+        "mapTitle": "default"
+    },
+    "mapRender": {
+        "maxZoomLevel": -2,
+        "minZoomLevel": 4 
+    }
 }
