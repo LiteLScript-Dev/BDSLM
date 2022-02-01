@@ -6,5 +6,9 @@
     "mapRender": {
         "maxZoomLevel": -2,
         "minZoomLevel": 4 
+    },
+    "autoRend":{
+        "enable": true,
+        "cycle": 30
     }
 }

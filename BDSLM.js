@@ -1,17 +1,17 @@
-var nginxConf = "\
-events {\n\
-    multi_accept       on;\n\
-}\n\
-\n\
-http {\n\
-    server {\n\
-        listen      port;\n\
-        listen      [::]:port;\n\
-        server_name example.com;\n\
-        root        ../unmined-web/;\n\
-        index       unmined.index.html;\n\
-    }\n\
-}"
+var nginxConf = `
+events {
+    multi_accept       on;
+}
+
+http {
+    server {
+        listen      port;
+        listen      [::]:port;
+        server_name example.com;
+        root        ../unmined-web/;
+        index       unmined.index.html;
+    }
+}`
 
 configure = JSON.parse(File.readFrom("./plugins/BDSLM/config.json"))
 
@@ -51,8 +51,41 @@ function startNginxWebserver() {
         system.cmd(".\\plugins\\BDSLM\\nginx\\nginx -p ./plugins/BDSLM/nginx/", function GetRendMapResult(_exitcode, _output) { });
     });
 }
+/*
+function autoRendInit() {
+    if (!isMapHolding) {
+        log("地图挂起中……安全起见，准备阶段不能将地图挂起。等待10秒重试……");
+        setTimeout(autoRenderInit, 10000);
+    }
+    else {
+        log("挂起地图，准备更新渲染");
+        mc.runcmdEx("save hold");
+        autoRend();
+    }
+}
+function autoRend() {
+    if (isMapHolding) {
+        log("地图已挂起，开始渲染。");
+        RendMap();
+        setTimeout(() => {
+            mc.runcmdEx("save resume");
+            log("恢复地图");
+        }, 10000);
+    }
+    else {
+        log("等待地图挂起……");
+        setTimeout(autoRenderInit, 10000);
+    }
+}
+function isMapHolding() {
+    mc.runcmdEx("save query").output.indexOf("Data saved.");
+}
+*/
 
 function Init() {
+    if (configure["autoRend"]["enable"]) {
+        setInterval(RendMap, configure["autoRend"]["cycle"] * 60 * 1000);
+    }
     RendMap();
     startNginxWebserver();
 }
