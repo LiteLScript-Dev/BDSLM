@@ -33,14 +33,36 @@ function RendMap() {
     let zoomout = configure["mapRender"]["minZoomLevel"];
     log("启动地图渲染进程……");
     system.cmd("start .\\plugins\\BDSLM\\unmined\\unmined-cli.exe web render --world=\"./worlds/" + serverProperties["level-name"] + "\" --output=\"./plugins/BDSLM/unmined-web/\" --imageformat=webp -c --zoomin=" + zoomin + " --zoomout=" + zoomout, function GetRendMapResult(_exitcode, _output) { });
-    setTimeout(changeWebTitle, 10000);
+    setTimeout(applyConf, 10000);
 }
 
-function changeWebTitle() {
+function applyConf() {
     log("应用配置文件……");
+    changeWebTitle();
+    addMarkers();
+}
+function changeWebTitle() {
     if (configure["webserver"]["mapTitle"] != "default") {
         File.writeTo("./plugins/BDSLM/unmined-web/unmined.index.html", File.readFrom("./plugins/BDSLM/unmined-web/unmined.index.html").replaceAll("UnminedMapProperties.worldName", '"' + configure["webserver"]["mapTitle"] + '"'));
     }
+}
+function addMarkers() {
+    let markers = JSON.parse(File.readFrom("./plugins/BDSLM/markers.json"));
+    let writeOut = {};
+    writeOut["isEnabled"] = true;
+    writeOut["markers"] = [];
+    markers.forEach((item, _index) => {
+        item["image"] = "custom.pin.png";
+        item["imageAnchor"] = ["0.5", 1];
+        item["imageScale"] = "0.3";
+        item["textColor"] = "red";
+        item["offsetX"] = 0;
+        item["offsetY"] = 20;
+        item["font"] = "bold 20px Calibri,sans serif";
+        writeOut["markers"].push(item);
+    });
+    writeOut = "UnminedCustomMarkers = " + data.toJson(writeOut, 4);
+    File.writeTo("./plugins/BDSLM/unmined-web/custom.markers.js", writeOut);
 }
 
 function startNginxWebserver() {
